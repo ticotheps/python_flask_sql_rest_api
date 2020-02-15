@@ -11,6 +11,12 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'db.sqlite')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+# Initializes Database
+db = SQLAlchemy(app)
+
+# Initializes Marshmallow (serializer + deserializer)
+ma = Marshmallow(app)
+
 # Runs the server
 if __name__ == '__main__':
     app.run(debug=True)
