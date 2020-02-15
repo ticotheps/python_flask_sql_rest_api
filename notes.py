@@ -32,4 +32,12 @@
         and reconstructed later.
     - Deserialization
         - The reconstructing of stored data into a human-readable format. 
+            - i.e. - "pickling"
+                - The Python Pickle Module
+                    - An object-oriented way to store Python objects directly in
+                    a special storage format.
+                    - Stores and reproduces Python lists and dictionaries very
+                    easily.
+                    - "Pickles" can only store an attribute's values.
+                    - "Pickles" CANNOT store file handles or connection sockets.
 """
