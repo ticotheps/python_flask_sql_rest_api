@@ -49,6 +49,11 @@ def add_product():
     
     # Instantiates a new instance of a 'Product' object
     new_product = Product(name, description, price, qty)
+    
+    db.session.add(new_product)
+    db.session.commit()
+    
+    return product_schema.jsonify(new_product)
 
 
 # Runs the server
