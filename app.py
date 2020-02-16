@@ -40,6 +40,67 @@ class ProductSchema(ma.Schema):
 product_schema = ProductSchema()
 products_schema = ProductSchema(many=True) 
 
+# Handles POST requests to '/product' endpoint
+@app.route('/product', methods=['POST'])
+# Adds a product to the database
+def add_product():
+    name = request.json['name']
+    description = request.json['description']
+    price = request.json['price']
+    qty = request.json['qty']
+    
+    # Instantiates a new instance of a 'Product' object
+    new_product = Product(name, description, price, qty)
+    
+    db.session.add(new_product)
+    db.session.commit()
+    return product_schema.jsonify(new_product)
+
+# Handles GET requests to '/product' endpoint
+@app.route('/product', methods=['GET'])
+# Returns all products in the database
+def get_products():
+    # Utilizes ORM instead of raw SQL query "SELECT * FROM products" 
+    all_products = Product.query.all()
+    result = products_schema.dump(all_products)
+    return jsonify(result)
+
+# Handles GET requests to '/product/<id>' endpoint
+@app.route('/product/<id>', methods=['GET'])
+# Returns a SINGLE PRODUCT from the database
+def get_single_product(id):
+    single_product = Product.query.get(id)
+    return product_schema.jsonify(single_product)
+
+# Handles PUT requests to '/product/<id>' endpoint
+@app.route('/product/<id>', methods=['PUT'])
+# Updates a single product in the database
+def update_product(id):
+    product = Product.query.get(id)
+    
+    name = request.json['name']
+    description = request.json['description']
+    price = request.json['price']
+    qty = request.json['qty']
+    
+    product.name = name
+    product.description = description
+    product.price = price
+    product.qty = qty
+    
+    db.session.commit()
+    return product_schema.jsonify(product)
+
+# Handles DELETE requests to '/product/<id>' endpoint
+@app.route('/product/<id>', methods=['DELETE'])
+# DELETES a SINGLE PRODUCT from the database
+def delete_product(id):
+    product = Product.query.get(id)
+    db.session.delete(product)
+    db.session.commit()
+    
+    return product_schema.jsonify(product)
+
 # Runs the server
 if __name__ == '__main__':
     app.run(debug=True)
