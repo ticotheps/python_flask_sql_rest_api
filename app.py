@@ -66,6 +66,13 @@ def get_products():
     result = products_schema.dump(all_products)
     return jsonify(result)
 
+# Handles GET requests to '/product/<id>' endpoint
+@app.route('/product/<id>', methods=['GET'])
+# Returns a SINGLE PRODUCT from the database
+def get_single_product(id):
+    single_product = Product.query.get(id)
+    return product_schema.jsonify(single_product)
+
 # Runs the server
 if __name__ == '__main__':
     app.run(debug=True)
