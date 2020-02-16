@@ -40,6 +40,17 @@ class ProductSchema(ma.Schema):
 product_schema = ProductSchema()
 products_schema = ProductSchema(many=True) 
 
+@app.route('/product', methods=['POST'])
+def add_product():
+    name = request.json['name']
+    description = request.json['description']
+    price = request.json['price']
+    qty = request.json['qty']
+    
+    # Instantiates a new instance of a 'Product' object
+    new_product = Product(name, description, price, qty)
+
+
 # Runs the server
 if __name__ == '__main__':
     app.run(debug=True)
