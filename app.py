@@ -54,7 +54,6 @@ def add_product():
     
     db.session.add(new_product)
     db.session.commit()
-    
     return product_schema.jsonify(new_product)
 
 # Handles GET requests to '/product' endpoint
@@ -72,6 +71,25 @@ def get_products():
 def get_single_product(id):
     single_product = Product.query.get(id)
     return product_schema.jsonify(single_product)
+
+# Handles PUT requests to '/product/<id>' endpoint
+@app.route('/product/<id>', methods=['PUT'])
+# Updates a single product in the database
+def update_product(id):
+    product = Product.query.get(id)
+    
+    name = request.json['name']
+    description = request.json['description']
+    price = request.json['price']
+    qty = request.json['qty']
+    
+    product.name = name
+    product.description = description
+    product.price = price
+    product.qty = qty
+    
+    db.session.commit()
+    return product_schema.jsonify(product)
 
 # Runs the server
 if __name__ == '__main__':
