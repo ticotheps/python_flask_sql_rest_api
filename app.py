@@ -91,6 +91,16 @@ def update_product(id):
     db.session.commit()
     return product_schema.jsonify(product)
 
+# Handles DELETE requests to '/product/<id>' endpoint
+@app.route('/product/<id>', methods=['DELETE'])
+# DELETES a SINGLE PRODUCT from the database
+def delete_product(id):
+    product = Product.query.get(id)
+    db.session.delete(product)
+    db.session.commit()
+    
+    return product_schema.jsonify(product)
+
 # Runs the server
 if __name__ == '__main__':
     app.run(debug=True)
