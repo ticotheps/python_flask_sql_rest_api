@@ -40,7 +40,9 @@ class ProductSchema(ma.Schema):
 product_schema = ProductSchema()
 products_schema = ProductSchema(many=True) 
 
+# Handles POST requests to '/product' endpoint
 @app.route('/product', methods=['POST'])
+# Adds a product to the database
 def add_product():
     name = request.json['name']
     description = request.json['description']
@@ -55,6 +57,14 @@ def add_product():
     
     return product_schema.jsonify(new_product)
 
+# Handles GET requests to '/product' endpoint
+@app.route('/product', methods=['GET'])
+# Returns all products in the database
+def get_products():
+    # Utilizes ORM instead of raw SQL query "SELECT * FROM products" 
+    all_products = Product.query.all()
+    result = products_schema.dump(all_products)
+    return jsonify(result)
 
 # Runs the server
 if __name__ == '__main__':
